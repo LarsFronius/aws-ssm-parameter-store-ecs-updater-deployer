@@ -9,3 +9,6 @@ Parameter Store values are read on task creation and thus subsequent updates to 
 This serverless application facilitates propagating Parameter Store updates via Cloudwatch Events to a Lambda function, that will restart specified ECS services.
 
 Services to be restarted on a parameter update can be specified on the parameter itself via the `restarts` tag.
+
+Made with ❤️ by Lars Fronius. Available on the [AWS Serverless Application Repository](https://aws.amazon.com/serverless)
+
