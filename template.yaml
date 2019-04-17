@@ -1,15 +1,37 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: >
-  aws-ssm-parameter-store-ecs-updater-deployer
+Description: 'aws-ssm-parameter-store-ecs-updater-deployer
 
+  '
 Globals:
   Function:
     Timeout: 5
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: Parameter-Store-ECS-Updater-and-Deployer
+    Description: 'Parameter Store values are read on task creation and subsequent
+      updates to parameters require a redeploy of ECS tasks. This serverless application
+      facilitates propagating parameter updates via Cloudwatch Events to a function,
+      that will redeploy ECS tasks.
 
+      '
+    Author: Lars Fronius
+    SpdxLicenseId: MIT
+    LicenseUrl: s3://aws-ssm-parameter-store-ecs-updater-deployer/7ae2be7fb1637141840314b51970a9f7
+    ReadmeUrl: s3://aws-ssm-parameter-store-ecs-updater-deployer/2927d989709a72172a97b212b1d82da5
+    Labels:
+    - parameterstore
+    - ssm
+    - ecs
+    - update
+    - deploy
+    - parameter
+    HomePageUrl: https://github.com/LarsFronius/aws-ssm-parameter-store-ecs-updater-deployer
+    SemanticVersion: 0.1.0
+    SourceCodeUrl: https://github.com/LarsFronius/aws-ssm-parameter-store-ecs-updater-deployer
 Resources:
   ParameterStoreECSUpdateFunction:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Type: AWS::Serverless::Function
     Properties:
       CodeUri: s3://aws-ssm-parameter-store-ecs-updater-deployer/parameter-store-ecs-updater-deployer.zip
       Handler: parameter-store-ecs-updater-deployer
@@ -18,19 +40,21 @@ Resources:
         CatchAll:
           Type: CloudWatchEvent
           Properties:
-              Pattern:
-                detail-type:
-                  - Parameter Store Change
-                source:
-                  - aws.ssm
-
+            Pattern:
+              detail-type:
+              - Parameter Store Change
+              source:
+              - aws.ssm
 Outputs:
-  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
-  # Find out more about other implicit resources you can reference within SAM
-  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
   ParameterStoreECSUpdateFunction:
-    Description: "First Lambda Function ARN"
-    Value: !GetAtt ParameterStoreECSUpdateFunction.Arn
+    Description: First Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - ParameterStoreECSUpdateFunction
+      - Arn
   ParameterStoreECSUpdateFunctionFunctionIamRole:
-    Description: "Implicit IAM Role created for Hello World function"
-    Value: !GetAtt ParameterStoreECSUpdateFunctionRole.Arn
+    Description: Implicit IAM Role created for Hello World function
+    Value:
+      Fn::GetAtt:
+      - ParameterStoreECSUpdateFunctionRole
+      - Arn
