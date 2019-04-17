@@ -27,7 +27,7 @@ Metadata:
     - deploy
     - parameter
     HomePageUrl: https://github.com/LarsFronius/aws-ssm-parameter-store-ecs-updater-deployer
-    SemanticVersion: 0.1.0
+    SemanticVersion: 0.1.1
     SourceCodeUrl: https://github.com/LarsFronius/aws-ssm-parameter-store-ecs-updater-deployer
 Resources:
   ParameterStoreECSUpdateFunction:
@@ -45,15 +45,24 @@ Resources:
               - Parameter Store Change
               source:
               - aws.ssm
+      Policies:
+      - Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - ec2:UpdateService
+          - ssm:ListTagsForResource
+          - ssm:GetParameters
+          Resource: '*'
 Outputs:
   ParameterStoreECSUpdateFunction:
-    Description: First Lambda Function ARN
+    Description: Parameter Store ECS Update Lambda Function ARN
     Value:
       Fn::GetAtt:
       - ParameterStoreECSUpdateFunction
       - Arn
   ParameterStoreECSUpdateFunctionFunctionIamRole:
-    Description: Implicit IAM Role created for Hello World function
+    Description: Implicit IAM Role created for Parameter Store ECS Update Lambda Function
     Value:
       Fn::GetAtt:
       - ParameterStoreECSUpdateFunctionRole
