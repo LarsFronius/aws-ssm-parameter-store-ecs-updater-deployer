@@ -60,7 +60,7 @@ func RequestHandler(lister TagLister, deployer ServiceDeployer) func(aws.Context
 
 			for _, tag := range tagResp.TagList {
 				if *tag.Key == "restarts" {
-					services := strings.Split(*tag.Value, ",")
+					services := strings.Split(*tag.Value, " ")
 					if len(services) == 0 {
 						return errors.New(`no services configured in tag "restarts"`)
 					}

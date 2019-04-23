@@ -66,6 +66,15 @@ func TestRequestHandler(t *testing.T) {
 			expectListerCalled:   1,
 			expectLogOutContains: `Redeploying service "foo" in cluster "bar" after update of parameter "foo"`,
 		},
+		{
+			name:                 "with updated parameter tagged with multiple restarts",
+			event:                events.CloudWatchEvent{Detail: json.RawMessage([]byte(`{"operation":"Update","name":"foo"}`))},
+			expectRetErr:         false,
+			mockListerOutput:     ssm.ListTagsForResourceOutput{TagList: []*ssm.Tag{{Key: aws.String("restarts"), Value: aws.String("bar:foo bar_2:foo_2")}}},
+			expectDeployerCalled: 2,
+			expectListerCalled:   1,
+			expectLogOutContains: `Redeploying service "foo" in cluster "bar" after update of parameter "foo"`,
+		},
 	}
 
 	for _, tc := range testCases {

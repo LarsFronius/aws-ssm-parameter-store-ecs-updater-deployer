@@ -27,7 +27,7 @@ Metadata:
     - deploy
     - parameter
     HomePageUrl: https://github.com/LarsFronius/aws-ssm-parameter-store-ecs-updater-deployer
-    SemanticVersion: 0.1.1
+    SemanticVersion: 0.1.3
     SourceCodeUrl: https://github.com/LarsFronius/aws-ssm-parameter-store-ecs-updater-deployer
 Resources:
   ParameterStoreECSUpdateFunction:
